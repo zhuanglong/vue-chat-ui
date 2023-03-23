@@ -1,30 +1,73 @@
-<script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
-</script>
-
 <template>
+  <Header />
   <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
+    <Message
+      v-for="message in messages"
+      :key="message.id"
+      :avatar="message.avatar"
+      :align="message.align"
+      :content="message.content"
+    />
+    <Message
+      v-if="chatLoading"
+      avatar="ChartAI"
+      align="left"
+      :content="LOADING_MESSAGE"
+    />
   </div>
-  <HelloWorld msg="Vite + Vue" />
+  <Textareaform @onSubmit="handleSubmit" />
 </template>
 
+<script setup lang="ts">
+  import { ref } from 'vue'
+
+  import Header from './components/Header.vue'
+  import Message from './components/Message.vue'
+  import Textareaform from './components/TextareaForm.vue'
+
+  import { MessageProps } from './types'
+  import { scrollToBottom } from './utils/scrollToBottom'
+
+  const WELCOME_MESSAGE = '你好！有什么我可以帮助你的吗？'
+  const LOADING_MESSAGE = '正在努力思考...'
+
+  const chatLoading = ref(false)
+  const messages = ref<MessageProps[]>([
+    {
+      id: String(Math.random()),
+      avatar: 'ChatAI',
+      align: 'left',
+      content: WELCOME_MESSAGE,
+    },
+  ])
+
+  const sleep = (time: number) => new Promise((resolve) => setTimeout(resolve, time))
+
+  const handleSubmit = async (value: string) => {
+    messages.value.push({
+      id: String(Math.random()),
+      avatar: 'user',
+      align: 'right',
+      content: value,
+    })
+    chatLoading.value = true
+    await sleep(16)
+    scrollToBottom()
+
+    await sleep(1000)
+    messages.value.push({
+      id: String(Math.random()),
+      avatar: 'ChatAI',
+      align: 'left',
+      content: WELCOME_MESSAGE,
+    })
+
+    chatLoading.value = false
+
+    await sleep(16)
+    scrollToBottom()
+  }
+</script>
+
 <style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
-}
 </style>
