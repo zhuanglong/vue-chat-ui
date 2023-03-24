@@ -26,7 +26,7 @@
   import Textareaform from './components/TextareaForm.vue'
 
   import { MessageProps } from './types'
-  import { scrollToBottom } from './utils/scrollToBottom'
+  import { scrollToBottom } from './utils/scroll'
 
   const WELCOME_MESSAGE = '你好！有什么我可以帮助你的吗？'
   const LOADING_MESSAGE = '正在努力思考...'

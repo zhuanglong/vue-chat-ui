@@ -2,7 +2,7 @@
   import { defineComponent, PropType } from 'vue'
 
   import { MessageProps } from '../types'
-  import { formatMessage, formatMessageMode } from '../utils/formatMessage'
+  import { formatMessage, FormatMessageMode } from '../utils/formatMessage'
 
   import avatarAI from '../assets/avatar-ai.png'
   import avatarUser from '../assets/avatar-user.svg'
@@ -34,7 +34,7 @@
               v-html={
                 formatMessage(
                   props.content,
-                  props.avatar === 'ChatAI' ? formatMessageMode.partial : formatMessageMode.zero,
+                  props.avatar === 'ChatAI' ? FormatMessageMode.partial : FormatMessageMode.zero,
                 )
               }
             />
